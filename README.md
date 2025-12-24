@@ -3,7 +3,7 @@ import { Factory, Calculator, DollarSign, Settings, Save, RotateCcw, TrendingUp,
 
 // Componente de Cartão Simples
 const Card = ({ children, className = "" }) => (
-  <div className={`bg-white rounded-lg shadow-md border border-gray-200 ${className}`}>
+  <div className={"bg-white rounded-lg shadow-md border border-gray-200 " + className}>
     {children}
   </div>
 );
@@ -14,7 +14,6 @@ export default function App() {
   const [productionTarget, setProductionTarget] = useState(100);
   
   // Estado para a "Receita" (Insumos necessários para produzir 1 Tonelada de Sílica)
-  // Valores iniciais hipotéticos para Sílica Precipitada (Exemplo)
   const [recipe, setRecipe] = useState([
     { id: 1, name: 'Silicato de Sódio', quantityPerTon: 2.5, unit: 'Ton', costPerUnit: 800 },
     { id: 2, name: 'Ácido Sulfúrico', quantityPerTon: 0.35, unit: 'Ton', costPerUnit: 1200 },
@@ -83,20 +82,20 @@ export default function App() {
               </div>
               <div>
                 <h1 className="text-2xl font-bold">SilicaManager Pro</h1>
-                <p className="text-blue-200 text-sm">Sistema de Planejamento de Produção de Sílica</p>
+                <p className="text-blue-200 text-sm">Sistema de Planeamento de Produção de Sílica</p>
               </div>
             </div>
             
             <div className="flex bg-blue-900/50 rounded-lg p-1">
               <button 
                 onClick={() => setActiveTab('dashboard')}
-                className={`px-4 py-2 rounded-md transition-all ${activeTab === 'dashboard' ? 'bg-white text-blue-900 font-bold shadow' : 'text-blue-100 hover:bg-blue-800'}`}
+                className={"px-4 py-2 rounded-md transition-all " + (activeTab === 'dashboard' ? 'bg-white text-blue-900 font-bold shadow' : 'text-blue-100 hover:bg-blue-800')}
               >
                 Painel de Cálculo
               </button>
               <button 
                 onClick={() => setActiveTab('settings')}
-                className={`px-4 py-2 rounded-md transition-all flex items-center gap-2 ${activeTab === 'settings' ? 'bg-white text-blue-900 font-bold shadow' : 'text-blue-100 hover:bg-blue-800'}`}
+                className={"px-4 py-2 rounded-md transition-all flex items-center gap-2 " + (activeTab === 'settings' ? 'bg-white text-blue-900 font-bold shadow' : 'text-blue-100 hover:bg-blue-800')}
               >
                 <Settings size={18} /> Configurar Receita
               </button>
@@ -107,10 +106,8 @@ export default function App() {
 
       <main className="container mx-auto px-4 py-8">
         
-        {/* --- ABA DASHBOARD --- */}
         {activeTab === 'dashboard' && (
           <div className="space-y-8">
-            
             {/* Input de Meta Principal */}
             <div className="bg-white rounded-xl shadow-md p-6 border-l-4 border-blue-600">
               <div className="flex flex-col md:flex-row items-center justify-between gap-6">
@@ -180,7 +177,7 @@ export default function App() {
               })}
             </div>
 
-            {/* Gráfico Visual Simplificado (Barra de Custo) */}
+            {/* Gráfico Visual */}
             <Card className="p-6">
               <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
                 <TrendingUp size={20} /> Distribuição de Custos
@@ -199,7 +196,7 @@ export default function App() {
                       <div className="w-full bg-gray-100 rounded-full h-3 overflow-hidden">
                         <div 
                           className="bg-blue-600 h-3 rounded-full transition-all duration-500"
-                          style={{ width: `${percent}%` }}
+                          style={{ width: percent + '%' }}
                         ></div>
                       </div>
                     </div>
@@ -210,80 +207,57 @@ export default function App() {
           </div>
         )}
 
-        {/* --- ABA CONFIGURAÇÕES (RECEITA) --- */}
+        {/* --- CONFIGURAÇÕES --- */}
         {activeTab === 'settings' && (
           <div className="max-w-4xl mx-auto">
             <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6 flex gap-3 items-start">
               <AlertTriangle className="text-yellow-600 shrink-0 mt-1" size={20} />
               <div>
-                <h4 className="font-bold text-yellow-800">Calibragem da Fábrica</h4>
+                <h4 className="font-bold text-yellow-800">Ajuste de Parâmetros</h4>
                 <p className="text-sm text-yellow-700">
-                  Ajuste os valores abaixo conforme a eficiência real da sua planta. 
-                  O sistema calcula: <strong>Quantidade necessária para produzir 1 Tonelada de Sílica.</strong>
+                  Configure os consumos por tonelada e os preços atuais.
                 </p>
               </div>
             </div>
 
             <Card className="overflow-hidden">
               <div className="p-6 border-b border-gray-200 flex justify-between items-center bg-gray-50">
-                <h3 className="font-bold text-lg text-gray-800">Configuração de Insumos (Receita)</h3>
-                <button 
-                  onClick={resetRecipe}
-                  className="text-sm text-red-600 hover:text-red-800 flex items-center gap-1 font-medium"
-                >
-                  <RotateCcw size={14} /> Restaurar Padrões
+                <h3 className="font-bold text-lg text-gray-800">Insumos da Receita</h3>
+                <button onClick={resetRecipe} className="text-sm text-red-600 hover:text-red-800 flex items-center gap-1 font-medium">
+                  <RotateCcw size={14} /> Restaurar
                 </button>
               </div>
               
               <div className="overflow-x-auto">
-                <table className="w-full text-left border-collapse">
-                  <thead>
-                    <tr className="bg-gray-100 text-gray-600 text-sm uppercase">
-                      <th className="p-4 font-semibold">Insumo / Material</th>
-                      <th className="p-4 font-semibold">Unidade</th>
-                      <th className="p-4 font-semibold w-40">Qtd. por Ton de Produto</th>
-                      <th className="p-4 font-semibold w-40">Custo Unitário (R$)</th>
+                <table className="w-full text-left">
+                  <thead className="bg-gray-100 text-gray-600 text-xs uppercase">
+                    <tr>
+                      <th className="p-4">Insumo</th>
+                      <th className="p-4">Unid</th>
+                      <th className="p-4">Qtd/Ton</th>
+                      <th className="p-4">Preço Unit</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100">
                     {recipe.map((item) => (
-                      <tr key={item.id} className="hover:bg-blue-50/50 transition-colors">
+                      <tr key={item.id} className="hover:bg-blue-50/50">
+                        <td className="p-4 font-medium">{item.name}</td>
+                        <td className="p-4 text-gray-500 text-sm">{item.unit}</td>
                         <td className="p-4">
                           <input 
-                            type="text" 
-                            value={item.name}
-                            onChange={(e) => updateRecipeItem(item.id, 'name', e.target.value)}
-                            className="w-full bg-transparent font-medium text-gray-800 border-b border-transparent focus:border-blue-500 outline-none"
-                          />
-                        </td>
-                        <td className="p-4 text-gray-500">
-                          <input 
-                            type="text" 
-                            value={item.unit}
-                            onChange={(e) => updateRecipeItem(item.id, 'unit', e.target.value)}
-                            className="w-20 bg-transparent border-b border-transparent focus:border-blue-500 outline-none"
+                            type="number" 
+                            value={item.quantityPerTon}
+                            onChange={(e) => updateRecipeItem(item.id, 'quantityPerTon', e.target.value)}
+                            className="w-full p-2 border border-gray-300 rounded text-sm"
                           />
                         </td>
                         <td className="p-4">
                           <input 
                             type="number" 
-                            step="0.01"
-                            value={item.quantityPerTon}
-                            onChange={(e) => updateRecipeItem(item.id, 'quantityPerTon', e.target.value)}
-                            className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-200 outline-none"
+                            value={item.costPerUnit}
+                            onChange={(e) => updateRecipeItem(item.id, 'costPerUnit', e.target.value)}
+                            className="w-full p-2 border border-gray-300 rounded text-sm"
                           />
-                        </td>
-                        <td className="p-4">
-                          <div className="relative">
-                            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs">R$</span>
-                            <input 
-                              type="number" 
-                              step="0.01"
-                              value={item.costPerUnit}
-                              onChange={(e) => updateRecipeItem(item.id, 'costPerUnit', e.target.value)}
-                              className="w-full pl-8 p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-200 outline-none"
-                            />
-                          </div>
                         </td>
                       </tr>
                     ))}
@@ -293,27 +267,21 @@ export default function App() {
               
               <div className="p-4 bg-gray-50 text-right">
                 <button 
-                  onClick={() => {
-                    setActiveTab('dashboard');
-                    setShowSaveAlert(true);
-                    setTimeout(() => setShowSaveAlert(false), 3000);
-                  }}
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium shadow transition-colors flex items-center gap-2 ml-auto"
+                  onClick={() => { setActiveTab('dashboard'); setShowSaveAlert(true); setTimeout(() => setShowSaveAlert(false), 3000); }}
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium flex items-center gap-2 ml-auto"
                 >
-                  <Save size={18} /> Salvar e Voltar
+                  <Save size={18} /> Guardar Alterações
                 </button>
               </div>
             </Card>
           </div>
         )}
 
-        {/* Notificação Flutuante */}
         {showSaveAlert && (
-          <div className="fixed bottom-4 right-4 bg-green-600 text-white px-6 py-3 rounded-lg shadow-xl flex items-center gap-3 animate-bounce">
-            <Save size={20} /> Configurações atualizadas com sucesso!
+          <div className="fixed bottom-4 right-4 bg-green-600 text-white px-6 py-3 rounded-lg shadow-xl animate-bounce">
+            Dados atualizados!
           </div>
         )}
-
       </main>
     </div>
   );
